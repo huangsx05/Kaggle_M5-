@@ -1,0 +1,54 @@
+import pandas as pd
+import matplotlib.pylab as plt
+
+INPUT_DIR = 'Data'
+calendar = pd.read_csv(f'{INPUT_DIR}/calendar.csv')
+price_ca1 = pd.read_csv(f'{INPUT_DIR}/sell_prices_CA1.csv')
+price_ca2 = pd.read_csv(f'{INPUT_DIR}/sell_prices_CA2.csv')
+
+## Preliminary study
+
+print(price_ca1.shape)  # (698412, 4)
+print(price_ca2.shape)  # (350163, 4)
+
+print(price_ca1.columns)  # ['store_id', 'item_id', 'wm_yr_wk', 'sell_price']
+print(price_ca2.columns)  # same as above
+
+# unique values in each column
+print(price_ca1['store_id'].unique())  # ['CA_1']
+print(price_ca2['store_id'].unique())  # ['CA_2']
+
+# total number of weeks
+print('total number of weeks: ', calendar['wm_yr_wk'].nunique()) # 282 weeks
+
+# how many weeks of price info for each item
+print(pd.value_counts(price_ca1['item_id'])) # range varies from 19 to 282
+print(pd.value_counts(price_ca2['item_id'])) # same as above
+
+## plot price trend 
+#for FOODS_1_001 at CA_1
+price_foods1001 = price_ca1[price_ca1['item_id'] == 'FOODS_1_001']
+print(price_foods1001.head())
+
+fig, ax = plt.subplots()
+ax.plot(price_foods1001['wm_yr_wk'], price_foods1001['sell_price'])
+ax.set_title("FOODS_1_001(CA_1)")
+plt.show()
+
+#for HOBBIES_1_001 at CA_1
+price_foods1001 = price_ca1[price_ca1['item_id'] == 'HOBBIES_1_001']
+print(price_foods1001.head())
+
+fig, ax = plt.subplots()
+ax.plot(price_foods1001['wm_yr_wk'], price_foods1001['sell_price'])
+ax.set_title("HOBBIES_1_001(CA_1)")
+plt.show()
+
+#for HOUSEHOLD_1_001 at CA_1
+price_foods1001 = price_ca1[price_ca1['item_id'] == 'HOUSEHOLD_1_001']
+print(price_foods1001.head())
+
+fig, ax = plt.subplots()
+ax.plot(price_foods1001['wm_yr_wk'], price_foods1001['sell_price'])
+ax.set_title("HOUSEHOLD_1_001(CA_1)")
+plt.show()

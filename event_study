@@ -1,0 +1,32 @@
+import pandas as pd
+pd.set_option('display.max_columns', 15) #可以将None换成数字
+
+INPUT_DIR = 'Data'
+calendar = pd.read_csv(f'{INPUT_DIR}/calendar.csv')
+
+#看看一共有多少天有2个event
+calendar_2event = calendar[calendar['event_name_1'].notnull() & calendar['event_name_2'].notnull()]
+print(calendar_2event.head())
+print(calendar_2event.shape) #只有5天有2个event
+
+#看看一共有多少天只有1个event
+calendar_1event = calendar[calendar['event_name_1'].notnull() & calendar['event_name_2'].isnull()]
+print(calendar_1event.head())
+print(calendar_1event.shape) #有157天只有1个event
+
+years = [2011, 2012, 2013, 2014, 2015, 2016]
+
+for year in years:
+	calendar_1event_year = calendar_1event[calendar_1event['year'] == year]
+	print(calendar_1event_year.head())
+	print('shape of year ', year, ': ', calendar_1event_year.shape)
+
+
+#来看看每年6-8月的event有哪些
+months = [6, 7, 8]
+for month in months:
+	calendar_1event_m = calendar_1event[calendar_1event['month'] == month]
+	print('\nmonth: ', month) 
+	print(calendar_1event_m.shape) 
+	print(calendar_1event_m[['date', 'wday', 'event_name_1', 'event_type_1']].head(calendar_1event_m.shape[0]))
+	print(calendar_1event_m[['date', 'wday', 'event_name_1', 'event_type_1']]['event_name_1'].unique()) #['NBAFinalsEnd' "Father's day" 'NBAFinalsStart' 'Ramadan starts']
