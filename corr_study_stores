@@ -1,0 +1,93 @@
+import pandas as pd
+#pd.set_option('display.max_columns', 15) #可以将None换成数字
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+### Read in the data
+INPUT_DIR = 'Data'
+#calendar = pd.read_csv(f'{INPUT_DIR}/calendar.csv')
+sales_foods = pd.read_csv(f'{INPUT_DIR}/sales_train_validation_foods.csv')
+sales_hobbies = pd.read_csv(f'{INPUT_DIR}/sales_train_validation_hobbies.csv')
+sales_household = pd.read_csv(f'{INPUT_DIR}/sales_train_validation_household.csv')
+
+print(sales_foods.shape)
+
+sales = sales_foods
+print(sales.head())
+print(sales.shape)
+sales = sales.append(sales_hobbies)
+print(sales.head())
+print(sales.shape)
+sales = sales.append(sales_household)
+print(sales.head())
+print(sales.shape)
+
+
+'''
+### corr for foods_1 for 10 stores
+foods = ['FOODS_1', 'FOODS_2', 'FOODS_3']
+#hobbies = ['HOBBIES_1', 'HOBBIES_2']
+#households = ['HOUSEHOLD_1', 'HOUSEHOLD_2']
+
+s_stores = []
+
+for food in foods:
+	store_food = sales_foods[sales_foods['dept_id'] == food].groupby('store_id').sum().T
+	print(food)
+	print(store_food.head())
+	s_stores.append(store_food)
+
+for hobby in hobbies:
+	store_hobby = sales_hobbies[sales_hobbies['dept_id'] == hobby].groupby('store_id').sum().T
+	print(hobby)
+	print(store_hobby.head())
+	s_stores.append(store_hobby)
+
+for household in households:
+	store_house = sales_household[sales_household['dept_id'] == household].groupby('store_id').sum().T
+	print(household)
+	print(store_house.head())
+	s_stores.append(store_house)
+
+for s_store in s_stores:
+	store_corr = s_store.corr()
+	plt.subplots(figsize=(7, 7)) # 设置画面大小
+	sns.heatmap(store_corr, annot=True, vmax=1, square=True, cmap="Blues")
+	plt.show()
+'''
+'''
+sales_dept = (foods_dept.append(hobbies_dept)).append(household_dept).T # merge dfs then transpose
+print(sales_dept.head())
+print(sales_dept.columns)
+
+#dept_col = ['FOODS_1', 'FOODS_2', 'FOODS_3', 'HOBBIES_1', 'HOBBIES_2', 'HOUSEHOLD_1', 'HOUSEHOLD_2']
+dept_corr = sales_dept.corr()
+print(dept_corr)  #correlation matrix
+
+# plot correlation matrix
+plt.subplots(figsize=(7, 7)) # 设置画面大小
+sns.heatmap(dept_corr, annot=True, vmax=1, square=True, cmap="Blues")
+plt.show()
+
+
+## corr for store id [CA1, CA2, CA3, CA4; TX1, TX2, TX3; WI1, WI2, WI3]
+store_foods_dept = sales_foods.groupby('store_id', '').sum()
+print(store_foods_dept.head())
+'''
+
+'''
+stores = ['CA_1', 'CA_2', 'CA_3', 'CA_4', 'TX_1', 'TX_2', 'TX_3', 'WI_1', 'WI_2', 'WI_3']
+#category = ['FOODS', 'HOBBIES', 'HOUSEHOLD']
+
+foods_store = [[]]
+
+for store in stores:
+	store_foods_dept = sales_foods.groupby(store).sum()
+	foods_store = foods_store.append(store_foods_dept)
+
+foods_store = foods_store.T
+print(foods_store.head())
+	#store_hobbies_dept = sales_hobbies.groupby(store).sum()
+	#store_household_dept = sales_household.groupby(store).sum()
+
+'''
